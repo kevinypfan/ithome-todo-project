@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './screens/todos_homepage.dart';
+import './screens/edit_todo_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: TodosHomepage(),
+      routes: {
+        // EditTodoScreen.routeName: (ctx) => EditTodoScreen(),
+      },
     );
   }
 }

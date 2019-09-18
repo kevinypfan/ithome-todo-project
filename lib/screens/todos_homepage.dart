@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/todo_tile.dart';
+import '../screens/edit_todo_screen.dart';
 
 class TodosHomepage extends StatefulWidget {
   @override
@@ -20,11 +21,30 @@ class _TodosHomepageState extends State<TodosHomepage> {
     });
   }
 
+  void _addTodoHandler(Map<String, dynamic> newTodo) {
+    setState(() {
+      todos.add(newTodo);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Todos'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => EditTodoScreen(_addTodoHandler),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: todos.length,
