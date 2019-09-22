@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
+
 import '../widgets/todo_tile.dart';
 import '../screens/edit_todo_screen.dart';
+import '../providers/todos.dart';
 
 class TodosHomepage extends StatefulWidget {
   @override
@@ -8,27 +12,11 @@ class TodosHomepage extends StatefulWidget {
 }
 
 class _TodosHomepageState extends State<TodosHomepage> {
-  List<Map<String, dynamic>> todos = [
-    {"title": "Test 1", "description": "abc123 def456", "done": false},
-    {"title": "Test 2", "description": "abc123 def456", "done": true},
-    {"title": "Test 3", "description": "abc123 def456", "done": false},
-    {"title": "Test 4", "description": "abc123 def456", "done": false},
-  ];
-
-  void toggleDoneHandler(index, value) {
-    setState(() {
-      todos[index]['done'] = value;
-    });
-  }
-
-  void _addTodoHandler(Map<String, dynamic> newTodo) {
-    setState(() {
-      todos.add(newTodo);
-    });
-  }
+  final SlidableController slidableController = SlidableController();
 
   @override
   Widget build(BuildContext context) {
+    final todosProvider = Provider.of<Todos>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Todos'),
@@ -39,7 +27,7 @@ class _TodosHomepageState extends State<TodosHomepage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => EditTodoScreen(_addTodoHandler),
+                  builder: (ctx) => EditTodoScreen(),
                 ),
               );
             },
@@ -47,12 +35,10 @@ class _TodosHomepageState extends State<TodosHomepage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: todos.length,
-        itemBuilder: (ctx, i) => TodoItem(
-          title: todos[i]['title'],
-          done: todos[i]['done'],
-          toggleDone: toggleDoneHandler,
-          index: i,
+        itemCount: todosProvider.items.length,
+        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+          value: todosProvider.items[i],
+          child: TodoTile(slidableController: slidableController),
         ),
       ),
     );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/todos.dart';
 
 class EditTodoScreen extends StatefulWidget {
-  final Function addTodo;
-
-  EditTodoScreen(this.addTodo);
-
   @override
   _EditTodoScreenState createState() => _EditTodoScreenState();
 }
@@ -36,7 +35,12 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
       _form.currentState.save();
       print(_editTodo['title']);
       print(_editTodo['description']);
-      widget.addTodo(_editTodo);
+      final Todo newTodo = Todo(
+        title: _editTodo['title'],
+        description: _editTodo['description'],
+        done: false,
+      );
+      Provider.of<Todos>(context, listen: false).addTodo(newTodo);
       Navigator.of(context).pop();
     }
   }

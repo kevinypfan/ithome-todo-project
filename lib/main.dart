@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import './screens/todos_homepage.dart';
-import './screens/edit_todo_screen.dart';
+import 'package:provider/provider.dart';
+import './providers/todos.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      builder: (_) => Todos(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: TodosHomepage(),
       ),
-      home: TodosHomepage(),
-      routes: {
-        // EditTodoScreen.routeName: (ctx) => EditTodoScreen(),
-      },
     );
   }
 }
